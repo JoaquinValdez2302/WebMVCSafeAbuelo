@@ -1,0 +1,139 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\controllers\\metodologiaataquescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\controllers\\metodologiaataquescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\models\\metodologiaataque.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\models\\metodologiaataque.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\models\\class.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\models\\class.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\controllers\\reporteincidentescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\controllers\\reporteincidentescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|c:\\users\\joaqu\\source\\repos\\webmvcsafeabuelo\\webmvcsafeabuelo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7526388-F9B1-AC3F-CA4A-796DC0FEEA59}|WebMVCSafeAbuelo\\WebMVCSafeAbuelo.csproj|solutionrelative:webmvcsafeabuelo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Class.cs",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Models\\Class.cs",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\Models\\Class.cs",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Models\\Class.cs",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\Models\\Class.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-26T15:04:01.432Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MetodologiaAtaquesController.cs",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Controllers\\MetodologiaAtaquesController.cs",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\Controllers\\MetodologiaAtaquesController.cs",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Controllers\\MetodologiaAtaquesController.cs",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\Controllers\\MetodologiaAtaquesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-26T21:42:24.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MetodologiaAtaque.cs",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Models\\MetodologiaAtaque.cs",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\Models\\MetodologiaAtaque.cs",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Models\\MetodologiaAtaque.cs",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\Models\\MetodologiaAtaque.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAA1wBwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-26T21:40:47.512Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ReporteIncidentesController.cs",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Controllers\\ReporteIncidentesController.cs",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\Controllers\\ReporteIncidentesController.cs",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Controllers\\ReporteIncidentesController.cs",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\Controllers\\ReporteIncidentesController.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAADwvzcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-26T18:15:04.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\appsettings.json",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\appsettings.json",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\appsettings.json",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-26T17:41:14.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-26T17:15:57.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Program.cs",
+              "RelativeDocumentMoniker": "WebMVCSafeAbuelo\\Program.cs",
+              "ToolTip": "C:\\Users\\joaqu\\source\\repos\\WebMVCSafeAbuelo\\WebMVCSafeAbuelo\\Program.cs",
+              "RelativeToolTip": "WebMVCSafeAbuelo\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-26T15:06:11.544Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+@model WebMVCSafeAbuelo.Models.ReporteIncidente
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ReporteIncidente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="FechaReporte" class="control-label"></label>
+                <input asp-for="FechaReporte" class="form-control" />
+                <span asp-validation-for="FechaReporte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Localidad" class="control-label"></label>
+                <input asp-for="Localidad" class="form-control" />
+                <span asp-validation-for="Localidad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlataformaDeContacto" class="control-label"></label>
+                <input asp-for="PlataformaDeContacto" class="form-control" />
+                <span asp-validation-for="PlataformaDeContacto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EjercePresionPsicologica" class="control-label"></label>
+                <input asp-for="EjercePresionPsicologica" class="form-check-input" />
+                <span asp-validation-for="EjercePresionPsicologica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneraSentidoDeUrgencia" class="control-label"></label>
+                <input asp-for="GeneraSentidoDeUrgencia" class="form-check-input" />
+                <span asp-validation-for="GeneraSentidoDeUrgencia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DescripcionDelEngaño" class="control-label"></label>
+                <input asp-for="DescripcionDelEngaño" class="form-control" />
+                <span asp-validation-for="DescripcionDelEngaño" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <input asp-for="Estado" class="form-control" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
