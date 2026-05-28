@@ -8,12 +8,14 @@ namespace WebMVCSafeAbuelo.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(30)]
+        [Required(ErrorMessage = "Ingrese el tipo de evidencia (N° de teléfono, mail, etc).")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 100 caracteres.")]
+        [Display(Name = "Tipo de evidencia")]
         public string Tipo { get; set; } = string.Empty; // Ej: "Teléfono", "URL", "CBU/CVU/Alias", "Email"
 
-        [Required]
-        [StringLength(255)]
+        [Required(ErrorMessage = "Ingrese el valor apropiado.")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "El valor debe tener entre 5 y 100 caracteres.")]
+        [Display(Name = "Valor")]
         public string Valor { get; set; } = string.Empty; // Ej: "+543794123456", "alias.falso.mp", "http://link-clonado.com"
 
         [StringLength(150)]
