@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebMVCSafeAbuelo.Data;
+using WebMVCSafeAbuelo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<WebMVCSafeAbuelo.Models.UsuarioAdministrador>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -42,5 +43,24 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
    .WithStaticAssets();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Solicitamos las herramientas necesarias al contenedor de dependencias
+        var userManager = services.GetRequiredService<UserManager<WebMVCSafeAbuelo.Models.UsuarioAdministrador>>();
+        var configuration = services.GetRequiredService<IConfiguration>();
 
-app.Run();
+        // Ejecutamos el inicializador de forma asíncrona
+        await WebMVCSafeAbuelo.Data.DbInitializer.InitializeAsync(userManager, configuration);
+    }
+    catch (Exception ex)
+    {
+        // En caso de fallar, registramos el error en la consola de depuración
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error irreversible durante el sembrado de datos.");
+    }
+}
+
+app.Run(); 

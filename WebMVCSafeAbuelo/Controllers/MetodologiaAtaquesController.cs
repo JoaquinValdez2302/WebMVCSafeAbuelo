@@ -1,9 +1,11 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebMVCSafeAbuelo.Models;
 using WebMVCSafeAbuelo.Data;
+using WebMVCSafeAbuelo.Models;
 
+[Authorize]
 public class MetodologiaAtaquesController : Controller
 {
     private readonly ApplicationDbContext _context;

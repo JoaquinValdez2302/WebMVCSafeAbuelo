@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebMVCSafeAbuelo.Models;
 using WebMVCSafeAbuelo.Data;
+using Microsoft.AspNetCore.Authorization;
 
+
+[Authorize]
 public class ReporteIncidentesController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -52,11 +55,12 @@ public class ReporteIncidentesController : Controller
     {
         if (ModelState.IsValid)
         {
+            reporteincidente.FechaReporte = DateTime.SpecifyKind(reporteincidente.FechaReporte, DateTimeKind.Utc);
             _context.Add(reporteincidente);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Create", "EvidenciaIncidentes", new { reporteId = reporteincidente.Id });
         }
-        return View(reporteincidente);
+        return View(reporteincidente);      
     }
 
     // GET: REPORTEINCIDENTES/Edit/5

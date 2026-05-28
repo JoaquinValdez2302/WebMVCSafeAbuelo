@@ -4,7 +4,7 @@ using WebMVCSafeAbuelo.Models;
 
 namespace WebMVCSafeAbuelo.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<UsuarioAdministrador>
     {
         public DbSet<WebMVCSafeAbuelo.Models.MetodologiaAtaque> MetodologiaAtaque { get; set; } = default!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -14,5 +14,7 @@ namespace WebMVCSafeAbuelo.Data
 
         // Agregamos tu modelo núcleo aquí para que EF lo transforme en tabla
         public DbSet<ReporteIncidente> ReportesIncidentes { get; set; }
+
+        public DbSet<EvidenciaIncidente> EvidenciasIncidentes { get; set; }
     }
 }
