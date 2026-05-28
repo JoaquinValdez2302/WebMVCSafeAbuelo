@@ -7,11 +7,13 @@ namespace WebMVCSafeAbuelo.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "El título es obligatorio para identificar la amenaza.")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "El título debe tener entre 5 y 100 caracteres.")]
+        [Display(Name = "Nombre")]
         public string Nombre { get; set; } // Ej: Cuento del Tío 2.0, Soporte Técnico Falso
 
-        [Required]
+        [Required(ErrorMessage = "La descripción es obligatorio para identificar la amenaza.")]
+        [Display(Name = "Descripción")]
         public string Descripcion { get; set; } = string.Empty;
 
         // --- Vectores de Ingeniería Social ---
