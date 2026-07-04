@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @model WebMVCSafeAbuelo.Models.ReporteIncidente
 
 @{
@@ -68,4 +69,76 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+=======
+@model WebMVCSafeAbuelo.Models.ReporteIncidente
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ReporteIncidente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="FechaReporte" class="control-label"></label>
+                <input asp-for="FechaReporte" class="form-control" />
+                <span asp-validation-for="FechaReporte" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Localidad" class="control-label"></label>
+                <input asp-for="Localidad" class="form-control" />
+                <span asp-validation-for="Localidad" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PlataformaDeContacto" class="control-label"></label>
+                <input asp-for="PlataformaDeContacto" class="form-control" />
+                <span asp-validation-for="PlataformaDeContacto" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EjercePresionPsicologica" class="control-label"></label>
+                <input asp-for="EjercePresionPsicologica" class="form-check-input" />
+                <span asp-validation-for="EjercePresionPsicologica" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GeneraSentidoDeUrgencia" class="control-label"></label>
+                <input asp-for="GeneraSentidoDeUrgencia" class="form-check-input" />
+                <span asp-validation-for="GeneraSentidoDeUrgencia" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DescripcionDelEngaño" class="control-label"></label>
+                <input asp-for="DescripcionDelEngaño" class="form-control" />
+                <span asp-validation-for="DescripcionDelEngaño" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <input asp-for="Estado" class="form-control" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+>>>>>>> 372985d67b913eb7a813fc3bafe6c54133fe4655
 }
