@@ -19,5 +19,7 @@
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
   </ItemGroup>
-
+	<ItemGroup>
+		<Content Update="appsettings.json" CopyToPublishDirectory="Never" />
+	</ItemGroup>
 </Project>
