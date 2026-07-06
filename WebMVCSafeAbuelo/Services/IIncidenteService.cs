@@ -5,6 +5,7 @@ namespace WebMVCSafeAbuelo.Services
     public interface IIncidenteService
     {
         Task<IEnumerable<ReporteIncidente>> ObtenerTodosAsync();
+        Task<(IEnumerable<ReporteIncidente> Incidentes, int TotalPaginas)> ObtenerPaginadosAsync(string buscar, int pagina, int cantidadPorPagina);
         Task<ReporteIncidente?> ObtenerPorIdAsync(int? id);
         Task CrearAsync(ReporteIncidente reporte);
         Task ActualizarAsync(ReporteIncidente reporte);

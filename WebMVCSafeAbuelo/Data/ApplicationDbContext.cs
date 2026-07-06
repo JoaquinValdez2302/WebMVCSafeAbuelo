@@ -32,6 +32,18 @@ namespace WebMVCSafeAbuelo.Data
             modelBuilder.Entity<EvidenciaIncidente>()
                 .Property(e => e.Tipo)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<ReporteIncidente>()
+    .Property(r => r.Provincia)
+    .HasConversion<string>();
+
+            modelBuilder.Entity<ReporteIncidente>()
+                .Property(r => r.Localidad)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<ReporteIncidente>()
+    .Property(r => r.Estado)
+    .HasConversion<string>();
         }
     }
 }

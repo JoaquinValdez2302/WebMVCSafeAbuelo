@@ -1,9 +1,10 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using WebMVCSafeAbuelo.Models;
-using Microsoft.AspNetCore.Authorization;
-using WebMVCSafeAbuelo.Services; // Aseguramos el acceso a la capa de servicios
+using WebMVCSafeAbuelo.Services;
 
 namespace WebMVCSafeAbuelo.Controllers
 {
@@ -18,9 +19,19 @@ namespace WebMVCSafeAbuelo.Controllers
         }
 
         // GET: REPORTEINCIDENTES
-        public async Task<IActionResult> Index()
-        {
-            return View(await _incidenteService.ObtenerTodosAsync());
+        public async Task<IActionResult> Index(string buscar, int pagina = 1)
+        { 
+            int cantidadPorPagina = 5; // Mostrar 5 incidentes por pantalla
+
+            // Llamamos a nuestro nuevo super-método
+            var resultado = await _incidenteService.ObtenerPaginadosAsync(buscar, pagina, cantidadPorPagina);
+
+            // Guardamos variables de estado en el ViewBag para que la vista HTML pueda dibujar los botones
+            ViewBag.Buscar = buscar;
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalPaginas = resultado.TotalPaginas;
+
+            return View(resultado.Incidentes);
         }
 
         // GET: REPORTEINCIDENTES/Details/5
@@ -36,25 +47,44 @@ namespace WebMVCSafeAbuelo.Controllers
         }
 
         // GET: REPORTEINCIDENTES/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: REPORTEINCIDENTES/Create
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
+        public async Task<IActionResult> Create([Bind("Id,Provincia,Localidad,FechaReporte,PlataformaDeContacto,PlataformaOtra,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporte)
         {
             if (ModelState.IsValid)
             {
-                await _incidenteService.CrearAsync(reporteincidente);
-                return RedirectToAction("Create", "EvidenciaIncidentes", new { reporteId = reporteincidente.Id });
+                reporte.FechaReporte = DateTime.SpecifyKind(reporte.FechaReporte, DateTimeKind.Utc);
+                try
+                {
+                    // Le pasamos el trabajo pesado a la capa de servicio
+                    // Nota: Cambia "CrearAsync" por el nombre exacto que tenga el método en tu interfaz IIncidenteService
+                    await _incidenteService.CrearAsync(reporte);
+
+                    return RedirectToAction("Index", "EvidenciaIncidentes", new { reporteId = reporte.Id }); 
+                }
+                catch (Exception ex)
+                {
+                    string errorReal = ex.Message;
+                    string detalleInterno = ex.InnerException != null ? ex.InnerException.Message : "Sin detalle interno";
+
+                    // Mostramos el error crudo en la pantalla para poder leerlo
+                    ModelState.AddModelError(string.Empty, $"MODO DEPURACIÓN - Error: {errorReal} | Detalle: {detalleInterno}");
+                }
             }
-            return View(reporteincidente);
+
+            return View(reporte);
         }
 
         // GET: REPORTEINCIDENTES/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -67,6 +97,7 @@ namespace WebMVCSafeAbuelo.Controllers
         }
 
         // POST: REPORTEINCIDENTES/Edit/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, [Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
@@ -96,6 +127,7 @@ namespace WebMVCSafeAbuelo.Controllers
         }
 
         // GET: REPORTEINCIDENTES/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -108,6 +140,7 @@ namespace WebMVCSafeAbuelo.Controllers
         }
 
         // POST: REPORTEINCIDENTES/Delete/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
@@ -118,5 +151,9 @@ namespace WebMVCSafeAbuelo.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        
     }
-}
+
+    
+
+    } 

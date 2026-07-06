@@ -1,10 +1,11 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
 using WebMVCSafeAbuelo.Data;
 using WebMVCSafeAbuelo.Models;
-using Microsoft.AspNetCore.Authorization;
 
 [Authorize]
 public class EvidenciaIncidentesController : Controller
@@ -17,9 +18,25 @@ public class EvidenciaIncidentesController : Controller
     }
 
     // GET: EVIDENCIAINCIDENTES
-    public async Task<IActionResult> Index()    
+    // Hacemos que el método reciba el ID del reporte
+    public async Task<IActionResult> Index(int? reporteId)
     {
-        return View(await _context.EvidenciasIncidentes.ToListAsync());
+        if (reporteId == null)
+        {
+            // Si alguien intenta entrar sin un reporte específico, lo devolvemos a la lista de incidentes
+            return RedirectToAction("Index", "ReporteIncidentes");
+        }
+
+        // Guardamos el ID en el ViewBag para que la vista HTML sepa de qué reporte hablamos
+        ViewBag.ReporteId = reporteId;
+
+        // Filtramos la base de datos para traer solo las evidencias de este reporte
+        var evidencias = await _context.EvidenciasIncidentes
+            .Include(e => e.ReporteIncidente) 
+            .Where(e => e.ReporteIncidenteId == reporteId)
+            .ToListAsync();
+
+        return View(evidencias);
     }
 
     // GET: EVIDENCIAINCIDENTES/Details/5
@@ -41,39 +58,45 @@ public class EvidenciaIncidentesController : Controller
     }
 
     // GET: EVIDENCIAINCIDENTES/Create
-    public IActionResult Create(int? reporteId)
+    public IActionResult Create(int reporteId)
     {
-        // Si venimos redirigidos desde un reporte nuevo, preseleccionamos ese reporte
-        if (reporteId.HasValue)
-        {
-            ViewData["ReporteIncidenteId"] = new SelectList(_context.ReportesIncidentes, "Id", "Id", reporteId.Value);
-        }
-        else
-        {
-            // Comportamiento normal si entramos directo a la página
-            ViewData["ReporteIncidenteId"] = new SelectList(_context.ReportesIncidentes, "Id", "Id");
-        }
-
+        // Le pasamos el ID del reporte a la vista para que lo ponga en un campo oculto
+        ViewBag.ReporteId = reporteId;
         return View();
     }
 
     // POST: EVIDENCIAINCIDENTES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Tipo,Valor,Notas,ReporteIncidenteId,ReporteIncidente")] EvidenciaIncidente evidenciaincidente)
+    public async Task<IActionResult> Create([Bind("Id,Tipo,Valor,ReporteIncidenteId")] EvidenciaIncidente evidenciaIncidente)
     {
+        ModelState.Remove("ReporteIncidente");
         if (ModelState.IsValid)
         {
-            _context.Add(evidenciaincidente);
+            // Guardamos usando exactamente el nombre de la variable que entró por el parámetro
+            _context.Add(evidenciaIncidente);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "ReporteIncidentes", new { id = evidenciaincidente.ReporteIncidenteId });
+
+            // Redirigimos usando el ID de ese mismo objeto
+            return RedirectToAction(nameof(Index), new { reporteId = evidenciaIncidente.ReporteIncidenteId });
         }
-        return View(evidenciaincidente);
+        var listaDeErrores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+
+        // Los unimos en un solo texto gigante
+        string mensajeDebug = "MODO DEPURACIÓN - Fallos detectados: " + string.Join(" | ", listaDeErrores);
+
+        // Inyectamos el texto en el resumen de validación para que aparezca en rojo en la pantalla
+        ModelState.AddModelError(string.Empty, mensajeDebug);
+        // ------------------------------------------
+
+        // Recargamos la vista
+        ViewBag.ReporteId = evidenciaIncidente.ReporteIncidenteId;
+        return View(evidenciaIncidente);
+      
     }
 
     // GET: EVIDENCIAINCIDENTES/Edit/5
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -90,8 +113,7 @@ public class EvidenciaIncidentesController : Controller
     }
 
     // POST: EVIDENCIAINCIDENTES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [Authorize(Roles = "Administrador")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Tipo,Valor,Notas,ReporteIncidenteId,ReporteIncidente")] EvidenciaIncidente evidenciaincidente)
@@ -125,6 +147,7 @@ public class EvidenciaIncidentesController : Controller
     }
 
     // GET: EVIDENCIAINCIDENTES/Delete/5
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -143,6 +166,7 @@ public class EvidenciaIncidentesController : Controller
     }
 
     // POST: EVIDENCIAINCIDENTES/Delete/5
+    [Authorize(Roles = "Administrador")]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)

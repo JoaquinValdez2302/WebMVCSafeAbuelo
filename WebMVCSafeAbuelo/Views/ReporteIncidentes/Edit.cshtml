@@ -43,9 +43,11 @@
                 <input asp-for="DescripcionDelEngaño" class="form-control" />
                 <span asp-validation-for="DescripcionDelEngaño" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Estado" class="control-label fw-bold">Estado del Reporte</label>
+                <select asp-for="Estado" class="form-select" asp-items="Html.GetEnumSelectList<WebMVCSafeAbuelo.Models.EstadoIncidente>()">
+                    <option value="">-- Seleccione un estado --</option>
+                </select>
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
             <div class="form-group">

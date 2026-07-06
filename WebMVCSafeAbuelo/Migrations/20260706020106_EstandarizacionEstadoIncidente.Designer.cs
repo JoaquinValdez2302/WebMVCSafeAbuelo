@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebMVCSafeAbuelo.Data;
@@ -11,9 +12,11 @@ using WebMVCSafeAbuelo.Data;
 namespace WebMVCSafeAbuelo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260706020106_EstandarizacionEstadoIncidente")]
+    partial class EstandarizacionEstadoIncidente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,6 +169,11 @@ namespace WebMVCSafeAbuelo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Notas")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
                     b.Property<int>("ReporteIncidenteId")
                         .HasColumnType("integer");
 
@@ -175,8 +183,8 @@ namespace WebMVCSafeAbuelo.Migrations
 
                     b.Property<string>("Valor")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -235,8 +243,7 @@ namespace WebMVCSafeAbuelo.Migrations
 
                     b.Property<string>("DescripcionDelEngaño")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("EjercePresionPsicologica")
                         .HasColumnType("boolean");
