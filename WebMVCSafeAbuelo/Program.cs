@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebMVCSafeAbuelo.Data;
+using WebMVCSafeAbuelo.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<WebMVCSafeAbuelo.Services.IIncidenteService, WebMVCSafeAbuelo.Services.IncidenteService>();
+builder.Services.AddScoped<IMetodologiaService, MetodologiaService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -20,38 +22,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// --- INICIO DEL SCRIPT DE SEMBRADO DE ROLES ---
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-
-        // 1. Creamos el rol Administrador si no existe en la base de datos
-        if (!await roleManager.RoleExistsAsync("Administrador"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("Administrador"));
-        }
-
-        // 2. Definimos el correo que será el dueño del sistema
-        // ¡IMPORTANTE! Cambia este string por el correo real con el que te vas a registrar
-        var adminEmail = "admin@safeabuelo.com";
-
-        var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-        // 3. Si el usuario ya existe y no tiene el rol, se lo asignamos
-        if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Administrador"))
-        {
-            await userManager.AddToRoleAsync(adminUser, "Administrador");
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error crítico al sembrar roles: {ex.Message}");
-    }
-}
 // --- FIN DEL SCRIPT ---
 
 // Configure the HTTP request pipeline.
@@ -91,11 +61,13 @@ using (var scope = app.Services.CreateScope())
     try
     {
         // Solicitamos las herramientas necesarias al contenedor de dependencias
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>(); 
         var userManager = services.GetRequiredService<UserManager<WebMVCSafeAbuelo.Models.UsuarioAdministrador>>();
+        var context = services.GetRequiredService<ApplicationDbContext>();
         var configuration = services.GetRequiredService<IConfiguration>();
 
         // Ejecutamos el inicializador de forma asíncrona
-        await WebMVCSafeAbuelo.Data.DbInitializer.InitializeAsync(userManager, configuration);
+        await WebMVCSafeAbuelo.Data.DbInitializer.InitializeAsync(userManager, context, configuration);
     }
     catch (Exception ex)
     {

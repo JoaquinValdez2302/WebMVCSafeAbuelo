@@ -1,63 +1,48 @@
 @model IEnumerable<WebMVCSafeAbuelo.Models.MetodologiaAtaque>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Repositorio de Metodologías";
 }
 
-<h1>Index</h1>
+<h2 class="mb-4">Repositorio de Metodologías</h2>
 
 @if (User.IsInRole("Administrador"))
 {
-    <p><a asp-action="Create">Create New</a></p>
+    <p><a asp-action="Create" class="btn btn-primary mb-3">Create New</a></p>
 }
-<table class="table">
+
+<form asp-action="Index" method="get" class="mb-4">
+    <div class="input-group shadow-sm">
+        <input type="text" name="searchString" class="form-control"
+               placeholder="Filtrar por nombre..." value="@ViewBag.SearchString">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+<table class="table-custom">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrincipalMotorPsicologico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SeñalesDeAlarma)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccionPreventiva)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstaActivo)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+            <th>@Html.DisplayNameFor(model => model.PrincipalMotorPsicologico)</th>
+            <th>@Html.DisplayNameFor(model => model.SeñalesDeAlarma)</th>
+            <th>@Html.DisplayNameFor(model => model.AccionPreventiva)</th>
+            <th>@Html.DisplayNameFor(model => model.EstaActivo)</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PrincipalMotorPsicologico)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.SeñalesDeAlarma)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.AccionPreventiva)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.EstaActivo)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                <td>@Html.DisplayFor(modelItem => item.PrincipalMotorPsicologico)</td>
+                <td>@Html.DisplayFor(modelItem => item.SeñalesDeAlarma)</td>
+                <td>@Html.DisplayFor(modelItem => item.AccionPreventiva)</td>
+                <td>@Html.DisplayFor(modelItem => item.EstaActivo)</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Detalles</a>
-
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
                     @if (User.IsInRole("Administrador"))
                     {
                         <text> | </text>
@@ -66,7 +51,34 @@
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
                     }
                 </td>
-        </tr>
-}
+            </tr>
+        }
     </tbody>
 </table>
+
+<nav aria-label="Navegación de metodologías">
+    <ul class="pagination justify-content-center mt-4">
+
+        <li class="page-item @(ViewBag.PageNumber == 0 ? "disabled" : "")">
+            <a class="page-link" asp-action="Index"
+               asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+               asp-route-searchString="@ViewBag.SearchString">Anterior</a>
+        </li>
+
+        @for (int i = 0; i < ViewBag.TotalPaginas; i++)
+        {
+            <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-pageNumber="@i"
+                   asp-route-searchString="@ViewBag.SearchString">@(i + 1)</a>
+            </li>
+        }
+
+        <li class="page-item @(ViewBag.PageNumber >= ViewBag.TotalPaginas - 1 ? "disabled" : "")">
+            <a class="page-link" asp-action="Index"
+               asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+               asp-route-searchString="@ViewBag.SearchString">Siguiente</a>
+        </li>
+
+    </ul>
+</nav>
