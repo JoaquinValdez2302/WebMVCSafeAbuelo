@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @model WebMVCSafeAbuelo.Models.ReporteIncidente
 
 @{
@@ -26,10 +25,18 @@
                 <span asp-validation-for="Localidad" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="PlataformaDeContacto" class="control-label"></label>
-                <input asp-for="PlataformaDeContacto" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="PlataformaDeContacto" class="control-label fw-bold">Plataforma de Contacto</label>
+                <select asp-for="PlataformaDeContacto" class="form-select" id="plataformaSelect" asp-items="Html.GetEnumSelectList<WebMVCSafeAbuelo.Models.PlataformaContacto>()">
+                    <option value="">-- Seleccione una plataforma --</option>
+                </select>
                 <span asp-validation-for="PlataformaDeContacto" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3" id="divPlataformaOtra" style="display: none;">
+                <label asp-for="PlataformaOtra" class="control-label fw-bold">Especifique la plataforma</label>
+                <input asp-for="PlataformaOtra" id="inputPlataformaOtra" class="form-control" placeholder="Ej: Telegram, Tinder..." />
+                <span asp-validation-for="PlataformaOtra" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -69,76 +76,29 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-=======
-@model WebMVCSafeAbuelo.Models.ReporteIncidente
 
-@{
-    ViewData["Title"] = "Create";
-}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const select = document.getElementById("plataformaSelect");
+            const divOtra = document.getElementById("divPlataformaOtra");
+            const inputOtra = document.getElementById("inputPlataformaOtra");
 
-<h1>Create</h1>
+            function verificarSeleccion() {
+                // Obtenemos el texto de la opción que el usuario seleccionó
+                const textoSeleccionado = select.options[select.selectedIndex].text;
 
-<h4>ReporteIncidente</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                if (textoSeleccionado === "Otro") {
+                    // Si es "Otro", mostramos la caja de texto
+                    divOtra.style.display = "block";
+                } else {
+                    // Si es cualquier otra cosa, la ocultamos y borramos lo que hayan escrito
+                    divOtra.style.display = "none";
+                    inputOtra.value = "";
+                }
+            }
 
-            <div class="form-group">
-                <label asp-for="FechaReporte" class="control-label"></label>
-                <input asp-for="FechaReporte" class="form-control" />
-                <span asp-validation-for="FechaReporte" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Localidad" class="control-label"></label>
-                <input asp-for="Localidad" class="form-control" />
-                <span asp-validation-for="Localidad" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PlataformaDeContacto" class="control-label"></label>
-                <input asp-for="PlataformaDeContacto" class="form-control" />
-                <span asp-validation-for="PlataformaDeContacto" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="EjercePresionPsicologica" class="control-label"></label>
-                <input asp-for="EjercePresionPsicologica" class="form-check-input" />
-                <span asp-validation-for="EjercePresionPsicologica" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="GeneraSentidoDeUrgencia" class="control-label"></label>
-                <input asp-for="GeneraSentidoDeUrgencia" class="form-check-input" />
-                <span asp-validation-for="GeneraSentidoDeUrgencia" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="DescripcionDelEngaño" class="control-label"></label>
-                <input asp-for="DescripcionDelEngaño" class="form-control" />
-                <span asp-validation-for="DescripcionDelEngaño" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
->>>>>>> 372985d67b913eb7a813fc3bafe6c54133fe4655
+            // Escuchar cada vez que el usuario cambia de opción
+            select.addEventListener("change", verificarSeleccion);
+        });
+    </script>
 }

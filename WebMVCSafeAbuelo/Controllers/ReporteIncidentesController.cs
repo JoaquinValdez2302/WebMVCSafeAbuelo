@@ -2,153 +2,121 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebMVCSafeAbuelo.Models;
-using WebMVCSafeAbuelo.Data;
 using Microsoft.AspNetCore.Authorization;
+using WebMVCSafeAbuelo.Services; // Aseguramos el acceso a la capa de servicios
 
-
-[Authorize]
-public class ReporteIncidentesController : Controller
+namespace WebMVCSafeAbuelo.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public ReporteIncidentesController(ApplicationDbContext context)
+    [Authorize]
+    public class ReporteIncidentesController : Controller
     {
-        _context = context;
-    }
+        private readonly IIncidenteService _incidenteService;
 
-    // GET: REPORTEINCIDENTES
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.ReportesIncidentes.ToListAsync());
-    }
-
-    // GET: REPORTEINCIDENTES/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
+        public ReporteIncidentesController(IIncidenteService incidenteService)
         {
-            return NotFound();
+            _incidenteService = incidenteService;
         }
 
-        var reporteincidente = await _context.ReportesIncidentes
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (reporteincidente == null)
+        // GET: REPORTEINCIDENTES
+        public async Task<IActionResult> Index()
         {
-            return NotFound();
+            return View(await _incidenteService.ObtenerTodosAsync());
         }
 
-        return View(reporteincidente);
-    }
-
-    // GET: REPORTEINCIDENTES/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: REPORTEINCIDENTES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
-    {
-        if (ModelState.IsValid)
+        // GET: REPORTEINCIDENTES/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            reporteincidente.FechaReporte = DateTime.SpecifyKind(reporteincidente.FechaReporte, DateTimeKind.Utc);
-            _context.Add(reporteincidente);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Create", "EvidenciaIncidentes", new { reporteId = reporteincidente.Id });
-        }
-        return View(reporteincidente);      
-    }
+            if (id == null) return NotFound();
 
-    // GET: REPORTEINCIDENTES/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
+            var reporteincidente = await _incidenteService.ObtenerPorIdAsync(id);
+
+            if (reporteincidente == null) return NotFound();
+
+            return View(reporteincidente);
         }
 
-        var reporteincidente = await _context.ReportesIncidentes.FindAsync(id);
-        if (reporteincidente == null)
+        // GET: REPORTEINCIDENTES/Create
+        public IActionResult Create()
         {
-            return NotFound();
-        }
-        return View(reporteincidente);
-    }
-
-    // POST: REPORTEINCIDENTES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
-    {
-        if (id != reporteincidente.Id)
-        {
-            return NotFound();
+            return View();
         }
 
-        if (ModelState.IsValid)
+        // POST: REPORTEINCIDENTES/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
         {
-            try
+            if (ModelState.IsValid)
             {
-                _context.Update(reporteincidente);
-                await _context.SaveChangesAsync();
+                await _incidenteService.CrearAsync(reporteincidente);
+                return RedirectToAction("Create", "EvidenciaIncidentes", new { reporteId = reporteincidente.Id });
             }
-            catch (DbUpdateConcurrencyException)
+            return View(reporteincidente);
+        }
+
+        // GET: REPORTEINCIDENTES/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var reporteincidente = await _incidenteService.ObtenerPorIdAsync(id);
+
+            if (reporteincidente == null) return NotFound();
+
+            return View(reporteincidente);
+        }
+
+        // POST: REPORTEINCIDENTES/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
+        {
+            if (id != reporteincidente.Id) return NotFound();
+
+            if (ModelState.IsValid)
             {
-                if (!ReporteIncidenteExists(reporteincidente.Id))
+                try
                 {
-                    return NotFound();
+                    await _incidenteService.ActualizarAsync(reporteincidente);
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!_incidenteService.Existe(reporteincidente.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(reporteincidente);
+        }
+
+        // GET: REPORTEINCIDENTES/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var reporteincidente = await _incidenteService.ObtenerPorIdAsync(id);
+
+            if (reporteincidente == null) return NotFound();
+
+            return View(reporteincidente);
+        }
+
+        // POST: REPORTEINCIDENTES/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if (id != null)
+            {
+                await _incidenteService.EliminarAsync(id.Value);
             }
             return RedirectToAction(nameof(Index));
         }
-        return View(reporteincidente);
-    }
-
-    // GET: REPORTEINCIDENTES/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var reporteincidente = await _context.ReportesIncidentes
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (reporteincidente == null)
-        {
-            return NotFound();
-        }
-
-        return View(reporteincidente);
-    }
-
-    // POST: REPORTEINCIDENTES/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var reporteincidente = await _context.ReportesIncidentes.FindAsync(id);
-        if (reporteincidente != null)
-        {
-            _context.ReportesIncidentes.Remove(reporteincidente);
-        }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool ReporteIncidenteExists(int? id)
-    {
-        return _context.ReportesIncidentes.Any(e => e.Id == id);
     }
 }

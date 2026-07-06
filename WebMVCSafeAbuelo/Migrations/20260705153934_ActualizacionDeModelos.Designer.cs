@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebMVCSafeAbuelo.Data;
@@ -11,9 +12,11 @@ using WebMVCSafeAbuelo.Data;
 namespace WebMVCSafeAbuelo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260705153934_ActualizacionDeModelos")]
+    partial class ActualizacionDeModelos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,7 +179,8 @@ namespace WebMVCSafeAbuelo.Migrations
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Valor")
                         .IsRequired()
@@ -263,11 +267,8 @@ namespace WebMVCSafeAbuelo.Migrations
 
                     b.Property<string>("PlataformaDeContacto")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlataformaOtra")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
