@@ -1,18 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
+using WebMVCSafeAbuelo.Models.Enums; 
 
 namespace WebMVCSafeAbuelo.Models
 {
-    public enum TipoEvidencia
-    {
-        CapturaDePantalla,
-        EnlaceMalicioso,
-        NumeroDeTelefono,
-        ComprobanteFinanciero,
-        DocumentoFalso,
-        CorreoElectronico
-    }
     public class EvidenciaIncidente
     {
         [Key]
@@ -20,17 +11,19 @@ namespace WebMVCSafeAbuelo.Models
 
         [Required]
         public int ReporteIncidenteId { get; set; }
-        public ReporteIncidente? ReporteIncidente { get; set; }
+        public virtual ReporteIncidente? ReporteIncidente { get; set; }
 
         [Required(ErrorMessage = "Debe especificar el tipo de evidencia.")]
-        public TipoEvidencia Tipo { get; set; }
+        public TipoEvidencia Tipo { get; set; } // Usa el Enum centralizado
 
-        // Asumimos que tu propiedad de texto se llama DetalleEvidencia o ArchivoUrl.
-        // Reemplaza "DetalleEvidencia" por el nombre exacto de tu propiedad de texto.
         [Required(ErrorMessage = "El contenido de la evidencia no puede estar vacío.")]
         [StringLength(500, ErrorMessage = "El contenido no puede superar los 500 caracteres.")]
-        [ValidarContenidoEvidencia] // <-- Nuestro escudo dinámico
+        [ValidarContenidoEvidencia] // <-- Nuestro escudo dinámico actualizado
         public string Valor { get; set; } = string.Empty;
+
+        // Nuevas propiedades exigidas por el DTO
+        public string Notas { get; set; } = string.Empty;
+        public string? LinkEvidencia { get; set; }
     }
 
     // --- VALIDADOR INTELIGENTE EN CASCADA ---
@@ -38,7 +31,6 @@ namespace WebMVCSafeAbuelo.Models
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            // Obtenemos la instancia del modelo que se está validando en tiempo real
             var evidencia = (EvidenciaIncidente)validationContext.ObjectInstance;
             var contenido = value as string;
 
@@ -47,39 +39,21 @@ namespace WebMVCSafeAbuelo.Models
                 return new ValidationResult("El contenido de la evidencia es requerido.");
             }
 
-            // CASO 1: Es un número de teléfono
-            if (evidencia.Tipo == TipoEvidencia.NumeroDeTelefono)
+            // CASO 1: Es un enlace web
+            if (evidencia.Tipo == TipoEvidencia.EnlaceWeb)
             {
-                // Regex estricta: Permite código de país opcional (+), código de área y entre 6 y 15 dígitos numéricos.
-                var regexTelefono = new Regex(@"^\+?[0-9\s\-]{6,15}$");
-                if (!regexTelefono.IsMatch(contenido))
-                {
-                    return new ValidationResult("Formato de teléfono inválido. Use números, espacios o guiones (Ej: +54 9 379 4123456).");
-                }
-            }
-            // CASO 2: Es un enlace malicioso (URL)
-            else if (evidencia.Tipo == TipoEvidencia.EnlaceMalicioso)
-            {
-                // Intentamos parsear la URL para verificar que sea absoluta y use protocolos web seguros
                 if (!Uri.TryCreate(contenido, UriKind.Absolute, out var uriResult) ||
                     (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps))
                 {
                     return new ValidationResult("Debe ingresar un enlace web válido que comience con http:// o https://");
                 }
             }
-            else if (evidencia.Tipo == TipoEvidencia.CorreoElectronico)
+            // CASO 2: Capturas de pantalla, comprobantes o texto descriptivo
+            else if (evidencia.Tipo == TipoEvidencia.Texto ||
+                     evidencia.Tipo == TipoEvidencia.CapturaPantalla ||
+                     evidencia.Tipo == TipoEvidencia.ComprobanteBancario)
             {
-                // Usamos el validador nativo de .NET
-                var emailValidator = new EmailAddressAttribute();
-                if (!emailValidator.IsValid(contenido))
-                {
-                    return new ValidationResult("Debe ingresar una dirección de correo electrónico válida (Ej: estafador@dominio.com).");
-                }
-            }
-            // CASO 3: Capturas de pantalla, comprobantes o documentos (Texto descriptivo)
-            else
-            {
-                // Sanitización básica: Permitimos caracteres alfanuméricos y puntuación común, bloqueando caracteres de scripts (<, >, ;, etc.)
+                // Sanitización básica: Permitimos alfanuméricos y puntuación común, bloqueando scripts
                 var regexTextoSeguro = new Regex(@"^[a-zA-Z0-9\s\.,:;\?¿!¡íóáéúñÍÓÁÉÚÑüÜ\(\)\-\/_\/]+$");
                 if (!regexTextoSeguro.IsMatch(contenido))
                 {

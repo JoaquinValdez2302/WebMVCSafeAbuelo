@@ -100,14 +100,16 @@ namespace WebMVCSafeAbuelo.Controllers
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,FechaReporte,Localidad,PlataformaDeContacto,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,AuthorId,Provincia,FechaReporte,Localidad,PlataformaDeContacto,PlataformaOtra,EjercePresionPsicologica,GeneraSentidoDeUrgencia,DescripcionDelEngaño,Estado")] ReporteIncidente reporteincidente)
         {
             if (id != reporteincidente.Id) return NotFound();
-
+            ModelState.Remove("Autor");
+            ModelState.Remove("Evidencias");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    reporteincidente.FechaReporte = DateTime.SpecifyKind(reporteincidente.FechaReporte, DateTimeKind.Utc);
                     await _incidenteService.ActualizarAsync(reporteincidente);
                 }
                 catch (DbUpdateConcurrencyException)

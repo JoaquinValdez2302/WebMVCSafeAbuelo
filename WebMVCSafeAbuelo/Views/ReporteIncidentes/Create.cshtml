@@ -21,7 +21,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="Provincia" class="control-label fw-bold">Provincia</label>
-                <select asp-for="Provincia" class="form-select" id="provinciaSelect" asp-items="Html.GetEnumSelectList<WebMVCSafeAbuelo.Models.Provincia>()">
+                <select asp-for="Provincia" class="form-select" id="provinciaSelect" asp-items="Html.GetEnumSelectList<Provincia>()">
                     <option value="">-- Seleccione una provincia --</option>
                 </select>
                 <span asp-validation-for="Provincia" class="text-danger"></span>
@@ -38,7 +38,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="PlataformaDeContacto" class="control-label fw-bold">Plataforma de Contacto</label>
-                <select asp-for="PlataformaDeContacto" class="form-select" id="plataformaSelect" asp-items="Html.GetEnumSelectList<WebMVCSafeAbuelo.Models.PlataformaContacto>()">
+                <select asp-for="PlataformaDeContacto" class="form-select" id="plataformaSelect" asp-items="Html.GetEnumSelectList<PlataformaDeContacto>()">
                     <option value="">-- Seleccione una plataforma --</option>
                 </select>
                 <span asp-validation-for="PlataformaDeContacto" class="text-danger"></span>
@@ -70,7 +70,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="Estado" class="control-label fw-bold">Estado del Reporte</label>
-                <select asp-for="Estado" class="form-select" asp-items="Html.GetEnumSelectList<WebMVCSafeAbuelo.Models.EstadoIncidente>()">
+                <select asp-for="Estado" class="form-select" asp-items="Html.GetEnumSelectList<EstadoReporte>()">
                     <option value="">-- Seleccione un estado --</option>
                 </select>
                 <span asp-validation-for="Estado" class="text-danger"></span>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebMVCSafeAbuelo.Data;
@@ -11,9 +12,11 @@ using WebMVCSafeAbuelo.Data;
 namespace WebMVCSafeAbuelo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260713004213_IntegracionPerfilesFirebase")]
+    partial class IntegracionPerfilesFirebase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,33 +235,6 @@ namespace WebMVCSafeAbuelo.Migrations
                     b.ToTable("MetodologiaAtaque");
                 });
 
-            modelBuilder.Entity("WebMVCSafeAbuelo.Models.PerfilUsuario", b =>
-                {
-                    b.Property<string>("FirebaseUid")
-                        .HasColumnType("text");
-
-                    b.Property<string>("EmailContacto")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NombreCompleto")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.HasKey("FirebaseUid");
-
-                    b.ToTable("PerfilesUsuarios");
-                });
-
             modelBuilder.Entity("WebMVCSafeAbuelo.Models.ReporteIncidente", b =>
                 {
                     b.Property<int>("Id")
@@ -306,8 +282,6 @@ namespace WebMVCSafeAbuelo.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.ToTable("ReportesIncidentes");
                 });
@@ -449,22 +423,6 @@ namespace WebMVCSafeAbuelo.Migrations
                         .IsRequired();
 
                     b.Navigation("ReporteIncidente");
-                });
-
-            modelBuilder.Entity("WebMVCSafeAbuelo.Models.ReporteIncidente", b =>
-                {
-                    b.HasOne("WebMVCSafeAbuelo.Models.PerfilUsuario", "Autor")
-                        .WithMany("Reportes")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Autor");
-                });
-
-            modelBuilder.Entity("WebMVCSafeAbuelo.Models.PerfilUsuario", b =>
-                {
-                    b.Navigation("Reportes");
                 });
 
             modelBuilder.Entity("WebMVCSafeAbuelo.Models.ReporteIncidente", b =>

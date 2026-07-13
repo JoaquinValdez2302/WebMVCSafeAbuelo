@@ -15,7 +15,7 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="Tipo" class="control-label fw-bold">Clasificación de la Evidencia</label>
-                    <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<WebMVCSafeAbuelo.Models.TipoEvidencia>()">
+                    <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<TipoEvidencia>()">
                         <option value="">-- Seleccione una categoría --</option>
                     </select>
                     <span asp-validation-for="Tipo" class="text-danger"></span>

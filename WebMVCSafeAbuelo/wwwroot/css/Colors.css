@@ -1,0 +1,129 @@
+﻿:root {
+    /* =========================================
+       1. VARIABLES BASE (HSL)
+       ========================================= */
+    /* Azul: hsl(209, 77%, 43%) */
+    --h-primary: 209;
+    --s-primary: 77%;
+    /* Rojo: hsl(359, 77%, 43%) */
+    --h-danger: 359;
+    --s-danger: 77%;
+    /* Amarillo: hsl(59, 77%, 43%) */
+    --h-warning: 59;
+    --s-warning: 77%;
+    /* Luminosidad base compartida por tus 3 colores */
+    --l-base: 43%;
+    /* =========================================
+       2. PALETA PRINCIPAL Y VARIANTES
+       ========================================= */
+    /* AZUL (Marca y Acciones Principales) */
+    --clr-primary-light: hsl(var(--h-primary), var(--s-primary), 85%); /* Fondos suaves, hover en botones fantasma */
+    --clr-primary: hsl(var(--h-primary), var(--s-primary), var(--l-base)); /* Tu #1971C2 exacto */
+    --clr-primary-dark: hsl(var(--h-primary), var(--s-primary), 30%); /* Texto sobre fondos claros o botones presionados */
+    /* ROJO (Rechazados, Alertas, Eliminar) */
+    --clr-danger-light: hsl(var(--h-danger), var(--s-danger), 85%);
+    --clr-danger: hsl(var(--h-danger), var(--s-danger), var(--l-base)); /* Tu #C2191C exacto */
+    --clr-danger-dark: hsl(var(--h-danger), var(--s-danger), 30%);
+    /* AMARILLO (Pendientes, Advertencias) */
+    --clr-warning-light: hsl(var(--h-warning), var(--s-warning), 85%);
+    --clr-warning: hsl(var(--h-warning), var(--s-warning), var(--l-base)); /* Tu #C2BF19 exacto */
+    --clr-warning-dark: hsl(var(--h-warning), var(--s-warning), 25%); /* Más oscuro para que el texto sea legible */
+    /* ESTADO ACEPTADO (Verde Genérico de Éxito para complementar) */
+    --clr-success-light: hsl(142, 71%, 85%);
+    --clr-success: hsl(142, 71%, 40%);
+    --clr-success-dark: hsl(142, 71%, 25%);
+    /* =========================================
+       3. NEUTRALES Y SUPERFICIES (Grises)
+       ========================================= */
+    --clr-background: #F8FAFC; /* Gris muy claro para el fondo de la web */
+    --clr-surface: #FFFFFF; /* Blanco puro para las tarjetas (cards) */
+    --clr-border: #E2E8F0; /* Para dividir secciones en tablas */
+
+    --clr-text-main: #0F172A; /* Casi negro, mejor para la lectura que el #000 puro */
+    --clr-text-muted: #64748B; /* Textos secundarios o notas de evidencias */
+}
+
+/* =========================================
+   CLASES DE UTILIDAD RÁPIDAS
+   ========================================= */
+.text-primary {
+    color: var(--clr-primary);
+}
+
+.bg-primary {
+    background-color: var(--clr-primary);
+    color: var(--clr-surface);
+}
+
+.badge-pendiente {
+    background-color: var(--clr-warning-light);
+    color: var(--clr-warning-dark);
+    border: 1px solid var(--clr-warning);
+}
+
+.badge-aceptado {
+    background-color: var(--clr-success-light);
+    color: var(--clr-success-dark);
+    border: 1px solid var(--clr-success);
+}
+
+.badge-rechazado {
+    background-color: var(--clr-danger-light);
+    color: var(--clr-danger-dark);
+    border: 1px solid var(--clr-danger);
+}
+/* =========================================
+   CLASES DE UTILIDAD RÁPIDAS (TEXTOS Y BORDES)
+   ========================================= */
+.text-primary {
+    color: var(--clr-primary) !important;
+}
+
+.text-warning {
+    color: var(--clr-warning) !important;
+}
+
+.text-danger {
+    color: var(--clr-danger) !important;
+}
+
+.text-muted {
+    color: var(--clr-text-muted) !important;
+}
+
+.bg-primary {
+    background-color: var(--clr-primary);
+    color: var(--clr-surface);
+}
+
+/* Bordes decorativos laterales para tarjetas */
+.border-left-primary {
+    border-left: 4px solid var(--clr-primary) !important;
+}
+
+.border-left-warning {
+    border-left: 4px solid var(--clr-warning) !important;
+}
+
+.border-left-danger {
+    border-left: 4px solid var(--clr-danger) !important;
+}
+
+/* Badges de Estado */
+.badge-pendiente {
+    background-color: var(--clr-warning-light);
+    color: var(--clr-warning-dark);
+    border: 1px solid var(--clr-warning);
+}
+
+.badge-aceptado {
+    background-color: var(--clr-success-light);
+    color: var(--clr-success-dark);
+    border: 1px solid var(--clr-success);
+}
+
+.badge-rechazado {
+    background-color: var(--clr-danger-light);
+    color: var(--clr-danger-dark);
+    border: 1px solid var(--clr-danger);
+}

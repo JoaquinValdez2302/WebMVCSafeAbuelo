@@ -503,6 +503,7 @@ TestResults/
 appsettings.json
 appsettings.Development.json
 appsettings.*.json
+firebase-key.json
 
 # ==========================================
 # 4. Perfiles de Publicación (Credenciales de Servidor)

@@ -2,6 +2,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebMVCSafeAbuelo.Data;
 using WebMVCSafeAbuelo.Services;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,11 +25,69 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<WebMVCSafeAbuelo.Models.UsuarioAdministrador>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+
+// Extraemos el Project ID desde appsettings.json
+var firebaseProjectId = builder.Configuration["Firebase:ProjectId"];
+
+if (FirebaseApp.DefaultInstance == null)
+{
+    // Construimos la ruta absoluta al archivo JSON
+    string pathCredenciales = Path.Combine(builder.Environment.ContentRootPath, "firebase-key.json");
+
+    FirebaseApp.Create(new AppOptions()
+    {
+        Credential = GoogleCredential.FromFile(pathCredenciales), 
+        ProjectId = firebaseProjectId
+    });
+}
+
+
+builder.Services.AddControllersWithViews()
+.AddJsonOptions(options =>
+ {
+     // Esta línea le dice a la API: "Si recibes un texto, conviértelo al Enum correspondiente"
+     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+ });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodo", policy =>
+    {
+        policy.AllowAnyOrigin()   // Permite cualquier IP, dominio o localhost
+              .AllowAnyHeader()   // Permite que pase el JWT de Firebase
+              .AllowAnyMethod();  // Permite GET, POST, PUT, DELETE, OPTIONS
+    });
+});
+
+
+// Agregamos los esquemas extra (JWT y Cookies Públicas) SIN pisar el default de Identity.
+// Nota que AddAuthentication() está vacío.
+builder.Services.AddAuthentication()
+    // 1. Esquema JWT (Para que la App Móvil hable con la API)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.Authority = $"https://securetoken.google.com/{firebaseProjectId}";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}",
+            ValidateAudience = true,
+            ValidAudience = firebaseProjectId,
+            ValidateLifetime = true
+        };
+    })
+    // 2. Esquema Cookies Públicas (Para que los abuelos naveguen la Web)
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.LoginPath = "/Cuenta/Login";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+    });
 
 var app = builder.Build();
 
-// --- FIN DEL SCRIPT ---
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -35,26 +100,24 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+
+
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
+app.UseCors("PermitirTodo");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+app.MapRazorPages();
 
-app.MapRazorPages()
-   .WithStaticAssets();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

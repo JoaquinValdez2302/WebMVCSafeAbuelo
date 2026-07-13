@@ -1,28 +1,27 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using WebMVCSafeAbuelo.Models
-
-@inject SignInManager<UsuarioAdministrador> SignInManager
-@inject UserManager<UsuarioAdministrador> UserManager
+﻿@using System.Security.Claims
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+    @* Usamos la validación genérica de Cookies, no la de Identity *@
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <li class="nav-item">
+            @* Mostramos el nombre que guardamos en la cookie desde Firebase *@
+            <a class="nav-link text-dark" title="Perfil">¡Hola @User.Identity.Name!</a>
+        </li>
+        <li class="nav-item">
+            @* Apuntamos el botón de salir a nuestro propio controlador *@
+            <form class="form-inline" asp-controller="Cuenta" asp-action="Logout">
+                <button type="submit" class="nav-link btn btn-link text-dark">Cerrar Sesión</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Cuenta" asp-action="Registro">Registrarse</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Cuenta" asp-action="Login">Iniciar Sesión</a>
+        </li>
+    }
 </ul>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebMVCSafeAbuelo.Data;
 using WebMVCSafeAbuelo.Models;
 
-namespace WebMVCSafeAbuelo.Controllers
+namespace WebMVCSafeAbuelo.Controllers.Api
 {
     // Esta ruta significa que accederás a la API desde: tusitio.com/api/MetodologiasApi
     [Route("api/[controller]")]

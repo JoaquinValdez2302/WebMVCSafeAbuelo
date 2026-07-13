@@ -4,14 +4,47 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using WebMVCSafeAbuelo.Models;
 
+// 1. Agregamos los nuevos usings necesarios
+using WebMVCSafeAbuelo.Services;
+using WebMVCSafeAbuelo.ViewModels;
+using WebMVCSafeAbuelo.Models.Enums;
+
 namespace WebMVCSafeAbuelo.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        // 2. Declaramos el servicio
+        private readonly IIncidenteService _incidenteService;
+
+        // 3. Inyectamos el servicio a través del constructor
+        public HomeController(IIncidenteService incidenteService)
         {
-            return View();
+            _incidenteService = incidenteService;
         }
+
+        // 4. Modificamos el Index para que sea asíncrono y llene el ViewModel
+        public async Task<IActionResult> Index()
+        {
+            var todosLosReportes = await _incidenteService.ObtenerTodosAsync();
+
+            var viewModel = new HomeIndexViewModel
+            {
+                TotalReportes = todosLosReportes.Count(),
+                ReportesPendientes = todosLosReportes.Count(r => r.Estado == EstadoReporte.Pendiente),
+                FraudesConfirmados = todosLosReportes.Count(r => r.Estado == EstadoReporte.Aceptado),
+
+                AlertasRecientes = todosLosReportes
+                    .Where(r => r.Estado == EstadoReporte.Aceptado)
+                    .OrderByDescending(r => r.FechaReporte)
+                    .Take(4)
+            };
+
+            return View(viewModel);
+        }
+
+        // =========================================================
+        // TUS MÉTODOS ORIGINALES SE MANTIENEN EXACTAMENTE IGUAL
+        // =========================================================
 
         public IActionResult Privacy()
         {

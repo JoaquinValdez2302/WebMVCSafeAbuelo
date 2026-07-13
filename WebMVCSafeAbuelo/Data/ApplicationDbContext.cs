@@ -14,8 +14,8 @@ namespace WebMVCSafeAbuelo.Data
 
         // Agregamos tu modelo núcleo aquí para que EF lo transforme en tabla
         public DbSet<ReporteIncidente> ReportesIncidentes { get; set; }
-
         public DbSet<EvidenciaIncidente> EvidenciasIncidentes { get; set; }
+        public DbSet<PerfilUsuario> PerfilesUsuarios { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
