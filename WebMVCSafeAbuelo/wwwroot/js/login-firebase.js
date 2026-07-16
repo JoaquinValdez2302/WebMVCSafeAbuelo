@@ -38,7 +38,7 @@ document.getElementById("btnIngresar").addEventListener("click", async (e) => {
         // 2. Extraemos el comprobante (Token)
         const token = await userCredential.user.getIdToken();
 
-        // 3. Enviamos el token a tu controlador C#
+        // 3. Enviamos el token al controlador C#
         const response = await fetch('/Cuenta/SincronizarLoginWeb', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

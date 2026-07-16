@@ -47,7 +47,7 @@ namespace WebMVCSafeAbuelo.Controllers.Api
         public async Task<ActionResult<IEnumerable<ReporteDetalleDto>>> GetReportesByUser(string userId)
         {
             // Medida defensiva: Extraemos el ID del usuario directamente del Token JWT de Firebase
-            // En Firebase, el UID se guarda típicamente en el claim "user_id" o "sub".
+            
             var tokenUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("user_id")?.Value;
 
             // VERIFICACIÓN CRÍTICA DEL CONTRATO: 

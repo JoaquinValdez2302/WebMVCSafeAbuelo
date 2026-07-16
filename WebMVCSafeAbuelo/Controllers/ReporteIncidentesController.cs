@@ -65,7 +65,6 @@ namespace WebMVCSafeAbuelo.Controllers
                 try
                 {
                     // Le pasamos el trabajo pesado a la capa de servicio
-                    // Nota: Cambia "CrearAsync" por el nombre exacto que tenga el método en tu interfaz IIncidenteService
                     await _incidenteService.CrearAsync(reporte);
 
                     return RedirectToAction("Index", "EvidenciaIncidentes", new { reporteId = reporte.Id }); 

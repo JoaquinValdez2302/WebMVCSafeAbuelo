@@ -102,7 +102,7 @@ namespace WebMVCSafeAbuelo.Services
         public async Task<IEnumerable<ReporteDetalleDto>> ObtenerReportesAceptadosPaginadosAsync(int page, int pageSize)
         {
             return await _context.ReportesIncidentes
-                .Include(r => r.Evidencias) // <-- ¡Clave para que el array de evidencias no llegue vacío!
+                .Include(r => r.Evidencias) 
                 .Where(r => r.Estado == EstadoReporte.Aceptado)
                 .OrderByDescending(r => r.FechaReporte)
                 .Skip((page - 1) * pageSize)
@@ -116,7 +116,7 @@ namespace WebMVCSafeAbuelo.Services
                     Localidad = r.Localidad.ToString(),
                     Estado = r.Estado.ToString(),
 
-                    // --- Los datos detallados que ahora sí viajarán a la App ---
+               
                     PlataformaDeContacto = r.PlataformaDeContacto.ToString(),
                     PlataformaOtra = r.PlataformaOtra,
                     EjercePresionPsicologica = r.EjercePresionPsicologica,
@@ -137,7 +137,7 @@ namespace WebMVCSafeAbuelo.Services
         public async Task<ReporteDetalleDto?> ObtenerReportePorIdAsync(int id)
         {
             return await _context.ReportesIncidentes
-                .Include(r => r.Evidencias) // Join anidado esencial para traer las evidencias
+                .Include(r => r.Evidencias) 
                 .Where(r => r.Id == id)
                 .Select(r => new ReporteDetalleDto
                 {
@@ -202,7 +202,7 @@ namespace WebMVCSafeAbuelo.Services
         {
             return await _context.ReportesIncidentes
                 .Include(r => r.Evidencias)
-                .Where(r => r.AuthorId == userId) // Trae los del usuario, sin importar si están pendientes o aceptados
+                .Where(r => r.AuthorId == userId) // Trae los reportes del usuario, sin importar si están pendientes o aceptados
                 .Select(r => new ReporteDetalleDto
                 {
                     Id = r.Id,

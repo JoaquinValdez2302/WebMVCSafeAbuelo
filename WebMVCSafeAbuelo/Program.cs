@@ -61,7 +61,6 @@ builder.Services.AddCors(options =>
 
 
 // Agregamos los esquemas extra (JWT y Cookies Públicas) SIN pisar el default de Identity.
-// Nota que AddAuthentication() está vacío.
 builder.Services.AddAuthentication()
     // 1. Esquema JWT (Para que la App Móvil hable con la API)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

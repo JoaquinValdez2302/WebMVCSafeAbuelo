@@ -78,7 +78,7 @@ namespace WebMVCSafeAbuelo.Controllers
             return View();
         }
 
-        // ¡Este es el método que recibe el token desde el JS de Login!
+        // Este es el método que recibe el token desde el JS de Login
         [HttpPost]
         public async Task<IActionResult> SincronizarLoginWeb([FromBody] LoginWebDto request)
         {
