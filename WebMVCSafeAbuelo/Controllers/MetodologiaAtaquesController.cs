@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebMVCSafeAbuelo.Models;
 using WebMVCSafeAbuelo.Services;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = "Identity.Application,Cookies")]
 public class MetodologiaAtaquesController : Controller
 {
     private readonly IMetodologiaService _metodologiaService;

@@ -1,13 +1,14 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WebMVCSafeAbuelo.Data;
-using WebMVCSafeAbuelo.Services;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
+using WebMVCSafeAbuelo.Data;
+using WebMVCSafeAbuelo.Services;
 
 
 
@@ -81,7 +82,7 @@ builder.Services.AddAuthentication()
         options.LoginPath = "/Cuenta/Login";
         options.ExpireTimeSpan = TimeSpan.FromDays(7);
         options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
         options.Cookie.SameSite = SameSiteMode.Lax;
     });
 
@@ -103,14 +104,25 @@ else
 
 
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 
 app.UseCors("PermitirTodo");
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.Use(async (context, next) =>
+{
+    if (context.User.Identity?.IsAuthenticated != true)
+    {
+        var result = await context.AuthenticateAsync(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme);
+        if (result.Succeeded && result.Principal != null)
+        {
+            context.User = result.Principal;
+        }
+    }
+    await next();
+});
 app.MapStaticAssets();
 app.MapControllerRoute(
     name: "default",

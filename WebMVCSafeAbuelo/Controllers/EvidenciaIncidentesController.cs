@@ -7,7 +7,7 @@ using System.Security.Policy;
 using WebMVCSafeAbuelo.Data;
 using WebMVCSafeAbuelo.Models;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = "Identity.Application,Cookies")]
 public class EvidenciaIncidentesController : Controller
 {
     private readonly ApplicationDbContext _context;

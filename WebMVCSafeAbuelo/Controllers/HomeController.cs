@@ -23,6 +23,7 @@ namespace WebMVCSafeAbuelo.Controllers
         }
 
         // 4. Modificamos el Index para que sea asíncrono y llene el ViewModel
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Index()
         {
             var todosLosReportes = await _incidenteService.ObtenerTodosAsync();

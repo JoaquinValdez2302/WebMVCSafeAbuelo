@@ -8,7 +8,7 @@ using WebMVCSafeAbuelo.Services;
 
 namespace WebMVCSafeAbuelo.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Identity.Application,Cookies")]
     public class ReporteIncidentesController : Controller
     {
         private readonly IIncidenteService _incidenteService;

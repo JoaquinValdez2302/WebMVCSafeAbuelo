@@ -116,7 +116,13 @@ namespace WebMVCSafeAbuelo.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            // 1. Destruye la Cookie de la sesión pública (Abuelos / Firebase)
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // 2. Destruye la Cookie de la sesión blindada (Administradores / Identity)
+            await HttpContext.SignOutAsync("Identity.Application");
+
+            // 3. Lo devuelve a la página de inicio de forma limpia
             return RedirectToAction("Index", "Home");
         }
     }
